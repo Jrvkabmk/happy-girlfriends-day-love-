@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Girlfriend's Day, Vaishnavi 💞</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Caveat:wght@600;700&display=swap');
+
+  :root{
+    --cherry-deep:#3d0e26;
+    --cherry:#7a1c3e;
+    --cherry-light:#ff6f91;
+    --pink-doll:#ff9ecb;
+    --pink-light:#ffd6e8;
+    --gold:#ffd76a;
+    --cream:#fff6ea;
+    --text-dark:#4a1030;
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+
+  html,body{
+    margin:0; padding:0; height:100%; overflow:hidden;
+    font-family:'Fredoka', 'Comic Sans MS', cursive, sans-serif;
+    background:#1c0715;
+    color:var(--text-dark);
+    user-select:none;
+  }
+
+  .caveat{ font-family:'Caveat','Comic Sans MS',cursive; }
+
+  #app{ position:relative; width:100vw; height:100vh; overflow:hidden; }
+
+  /* ---------- shared night scene: moon / cherry tree / water ---------- */
+  .bg{ position:absolute; inset:0; z-index:0; overflow:hidden;
+    background:linear-gradient(180deg, var(--cherry-deep) 0%, var(--cherry) 58%, #5c1530 78%, #2c0a1c 100%);
+  }
+  .moon{
+    position:absolute; top:6%; right:10%; width:100px; height:100px; border-radius:50%;
+    background:radial-gradient(circle at 38% 35%, #fffdf3 0%, #fdf0cf 30%, #f3d9a3 55%, rgba(243,217,163,.25) 78%, transparent 100%);
+    box-shadow:0 0 45px 18px rgba(250,225,170,.22), 0 0 90px 40px rgba(250,225,170,.10);
+    opacity:.92;
+  }
+  .moon::after{ content:''; position:absolute; inset:0; border-radius:50%;
+    background:radial-gradient(circle at 65% 68%, rgba(120,80,60,.18), transparent 40%),
+               radial-gradient(circle at 30% 60%, rgba(120,80,60,.12), transparent 35%);
+  }
+  .tree{ position:absolute; left:-4%; bottom:14%; width:46%; max-width:220px; opacity:.9; }
+  .tree svg{ width:100%; height:auto; display:block; filter:drop-shadow(0 6px 10px rgba(0,0,0,.4)); }
+  .water{
+    position:absolute; left:0; right:0; bottom:0; height:16%;
+    background:linear-gradient(180deg, rgba(90,20,50,.0), rgba(35,8,22,.85) 60%, #1c0715 100%);
+  }
+  .water::before{ content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg, rgba(255,230,190,.05) 0 2px, transparent 2px 40px);
+    animation: shimmer 5s linear infinite;
+  }
+  @keyframes shimmer{ 0%{transform:translateX(0);} 100%{transform:translateX(40px);} }
+  .moon-reflect{
+    position:absolute; bottom:0; right:14%; width:60px; height:16%;
+    background:linear-gradient(180deg, rgba(250,230,180,.35), transparent);
+    filter:blur(2px);
+  }
+  .petals{ position:absolute; inset:0; pointer-events:none; z-index:1; }
+  .petal{ position:absolute; top:-5%; font-size:15px; opacity:.85; animation: fall linear infinite; }
+  @keyframes fall{
+    0%{ transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:.9;}
+    100%{ transform:translateY(110vh) translateX(40px) rotate(360deg); opacity:.15;}
+  }
+
+  /* ---------- floating sparkle/heart particles — BEHIND cards ---------- */
+  #particles{ position:fixed; inset:0; pointer-events:none; z-index:1; }
+  .p{ position:absolute; bottom:-5%; font-size:17px; opacity:0; animation: floatUp linear infinite; }
+  @keyframes floatUp{
+    0%{ transform:translateY(0) translateX(0) scale(.7) rotate(0deg); opacity:0;}
+    10%{opacity:.85;}
+    50%{ transform:translateY(-55vh) translateX(15px) scale(1.05) rotate(180deg);}
+    90%{opacity:.75;}
+    100%{ transform:translateY(-110vh) translateX(-10px) scale(.6) rotate(360deg); opacity:0;}
+  }
+
+  /* ---------- screens ---------- */
+  .screen{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    flex-direction:column; opacity:0; pointer-events:none; transform:scale(.96);
+    transition:opacity .5s ease, transform .5s ease; padding:24px; text-align:center;
+    z-index:2;
+  }
+  .screen.active{ opacity:1; pointer-events:auto; transform:scale(1); }
+
+  .title-bubble{
+    font-size:clamp(22px,5vw,34px); font-weight:700; color:var(--cream);
+    text-shadow:0 0 12px rgba(255,158,203,.9), 0 0 3px #fff; letter-spacing:.5px;
+    margin-bottom:6px; position:relative; z-index:3;
+  }
+  .highlight{
+    background:linear-gradient(90deg,var(--gold),var(--pink-doll));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .page-heading .highlight{
+    background:linear-gradient(90deg,var(--cherry),#c8306a);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sub{ color:var(--pink-light); font-size:14px; margin-bottom:14px; position:relative; z-index:3;}
+
+  /* ---------- chibi girl v2 — original SVG, cuter proportions ---------- */
+  .chibi{ width:150px; height:190px; position:relative; z-index:3; filter:drop-shadow(0 8px 14px rgba(0,0,0,.35)); }
+  .chibi svg{ width:100%; height:100%; }
+
+  /* ---------- envelope / letter on cover ---------- */
+  .envelope-wrap{ position:relative; z-index:3; margin:6px 0 34px; cursor:pointer; }
+  .envelope{
+    width:min(74vw,270px); height:min(52vw,190px); position:relative;
+    background:linear-gradient(160deg,#fff8ef,var(--pink-light));
+    border-radius:14px;
+    box-shadow:0 0 0 3px #fff inset, 0 12px 32px rgba(0,0,0,.4), 0 0 35px rgba(255,158,203,.45);
+    transition:transform .25s ease;
+    overflow:visible;
+  }
+  .envelope-wrap:active .envelope{ transform:scale(.96); }
+  .envelope::before{ /* flap */
+    content:''; position:absolute; top:0; left:0; width:100%; height:60%;
+    background:linear-gradient(160deg,#ffffff,var(--pink-doll));
+    clip-path:polygon(0 0,100% 0,50% 78%);
+    border-radius:14px 14px 0 0;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  .envelope::after{ /* bottom pocket lines */
+    content:''; position:absolute; bottom:0; left:0; width:100%; height:55%;
+    background:linear-gradient(200deg, transparent 48%, rgba(255,158,203,.35) 49%, transparent 50%),
+               linear-gradient(160deg, transparent 48%, rgba(255,158,203,.35) 49%, transparent 50%);
+    border-radius:0 0 14px 14px;
+  }
+  .seal{
+    position:absolute; top:44%; left:50%; transform:translate(-50%,-50%);
+    width:52px; height:52px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ffb6d4, var(--cherry-light) 70%);
+    display:flex; align-items:center; justify-content:center; font-size:24px;
+    box-shadow:0 0 18px rgba(255,158,203,.9), 0 3px 6px rgba(0,0,0,.3);
+    z-index:4; animation:pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.1);} }
+  .tap-label{ text-align:center; margin-top:10px; font-size:13px; color:var(--cream); font-weight:600; }
+
+  /* ---------- pop / reveal burst ---------- */
+  .burst-emoji{ position:absolute; font-size:24px; opacity:0; z-index:5; }
+  .burst-emoji.go{ animation: burstOut .9s ease-out forwards; }
+  @keyframes burstOut{
+    0%{ transform:translate(0,0) scale(.3); opacity:1; }
+    100%{ transform:translate(var(--dx),var(--dy)) scale(1.1); opacity:0; }
+  }
+
+  /* ---------- letter pages ---------- */
+  .page-card{
+    width:min(88vw,340px); height:min(72vh,460px);
+    background:linear-gradient(170deg,#fffaf3,var(--pink-light));
+    border-radius:34px;
+    box-shadow:0 0 0 3px #fff inset, 0 14px 40px rgba(0,0,0,.4), 0 0 45px rgba(255,158,203,.45);
+    padding:26px 22px 70px; position:relative; display:flex; flex-direction:column;
+    align-items:center; justify-content:flex-start; z-index:3;
+    overflow-y:auto;
+  }
+  .page-num{ position:absolute; top:14px; right:20px; font-size:12px; color:var(--cherry); opacity:.6; font-weight:700;}
+  .page-text{ font-size:13.5px; line-height:1.55; color:var(--text-dark); margin-top:8px; white-space:pre-line; text-align:left; }
+  .page-heading{ font-family:'Caveat',cursive; font-size:30px; color:var(--cherry); margin-bottom:4px;}
+  .nav-sparkle{
+    position:absolute; top:50%; transform:translateY(-50%);
+    font-size:26px; cursor:pointer; background:none; border:none; line-height:1;
+    filter:drop-shadow(0 0 6px rgba(255,215,106,.9));
+    animation:twinkle 1.4s ease-in-out infinite;
+  }
+  @keyframes twinkle{ 0%,100%{opacity:.55; transform:translateY(-50%) scale(.9);} 50%{opacity:1; transform:translateY(-50%) scale(1.15);} }
+  .nav-sparkle.left{ left:4px; } .nav-sparkle.right{ right:4px; }
+  .mini-chibi{ position:absolute; bottom:-10px; right:-14px; width:70px; height:90px; z-index:3;}
+  .mini-chibi.look-up{ bottom:-6px; right:50%; transform:translateX(50%) rotate(0deg); }
+  .mini-chibi.look-up svg{ transform:translateY(4px); }
+  .mini-chibi.surprised{ bottom:-8px; right:50%; transform:translateX(50%) scale(1.05); }
+
+  /* ---------- final page ---------- */
+  .crown{ font-size:44px; margin-bottom:-14px; filter:drop-shadow(0 0 10px var(--gold)); animation:pulse2 2s ease-in-out infinite; z-index:3; position:relative;}
+  @keyframes pulse2{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+  .heart-photo{
+    width:min(62vw,230px); height:min(62vw,230px);
+    clip-path: path('M115,210 C10,140 -10,55 45,20 C80,-2 115,25 115,55 C115,25 150,-2 185,20 C240,55 220,140 115,210 Z');
+    background:linear-gradient(160deg,var(--pink-doll),var(--gold));
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    box-shadow:0 0 40px rgba(255,158,203,.7);
+    position:relative; cursor:pointer; z-index:3;
+  }
+  .heart-photo img{ width:100%; height:100%; object-fit:cover; display:none; }
+  .heart-photo .placeholder{ color:#fff; font-size:13px; padding:20px; font-weight:600;}
+  #photoInput{ display:none; }
+  .princess-text{ font-family:'Caveat',cursive; font-size:36px; color:var(--cream); margin-top:14px; text-shadow:0 0 10px rgba(255,158,203,.9); position:relative; z-index:3;}
+  .final-name{ font-size:22px; font-weight:700; color:var(--gold); margin-top:-4px; position:relative; z-index:3;}
+
+  /* ---------- music toggle ---------- */
+  #musicBtn{
+    position:fixed; top:14px; right:14px; z-index:60; width:44px; height:44px; border-radius:50%;
+    border:none; background:rgba(255,255,255,.18); backdrop-filter:blur(6px); color:#fff; font-size:18px;
+    cursor:pointer; box-shadow:0 0 12px rgba(0,0,0,.3);
+  }
+
+  .edit-note{ font-size:10.5px; color:var(--cherry); opacity:.55; margin-top:10px; position:relative; z-index:3;}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="bg">
+    <div class="moon"></div>
+    <div class="tree" id="treeWrap"></div>
+    <div class="moon-reflect"></div>
+    <div class="water"></div>
+    <div class="petals" id="petals"></div>
+  </div>
+  <div id="particles"></div>
+  <button id="musicBtn" onclick="toggleMusic()">🔇</button>
+
+  <!-- ===================== SCREEN 0 : COVER ===================== -->
+  <section class="screen active" id="screen-cover">
+    <div class="title-bubble">Happy <span class="highlight">Girlfriend's&nbsp;Day</span> ✨</div>
+    <div class="sub">love~ 💕</div>
+    <div class="chibi" id="chibiCover"></div>
+    <div class="envelope-wrap" onclick="openLetter()">
+      <div class="envelope">
+        <div class="seal">❣️</div>
+      </div>
+      <div class="tap-label">✨ tap to open ✨</div>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 1 : POP REVEAL ===================== -->
+  <section class="screen" id="screen-reveal">
+    <div class="chibi" id="chibiReveal"></div>
+    <div class="title-bubble" style="margin-top:14px;">A letter for you<br>mah <span class="highlight">Vaishnavi</span> 💌</div>
+    <div class="sub">✨ keep tapping to read it ✨</div>
+    <button class="nav-sparkle" style="position:static; font-size:34px;" onclick="goTo('page1')">✨</button>
+  </section>
+
+  <!-- ===================== SCREEN 2-5 : LETTER PAGES ===================== -->
+  <section class="screen" id="screen-page1">
+    <div class="page-card">
+      <div class="page-num">1 / 4</div>
+      <div class="page-heading"><span class="highlight">Thank You for Every Little Thing ❤️</span></div>
+      <div class="page-text">My love, Vaishnavi,
+
+Happy Girlfriend's Day. I don't think words will ever be enough to tell you how grateful I am for you. Thank you for every little effort you make every single day. The way you love me, tease me, make me laugh, and care for me means more than you know. Even when you don't always know how to take care of someone, you still try your absolute best, and that's what makes your love so beautiful. You take risks for me, stand by me, and never stop trying to make me smile. Thank you, my love, for always choosing me.</div>
+      <div class="mini-chibi" id="chibiP1"></div>
+      <button class="nav-sparkle right" onclick="goTo('page2')">✨</button>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-page2">
+    <div class="page-card">
+      <div class="page-num">2 / 4</div>
+      <div class="page-heading"><span class="highlight">You Are My Peace 🫂</span></div>
+      <div class="page-text">Every morning, every night, and every single moment I spend with you feels like something my heart never wants to lose. Being with you heals parts of me that I didn't even know were hurting. Your presence gives me a feeling I can't explain—it's warm, comforting, and full of love. Every conversation, every laugh, every silence with you helps us grow stronger together. No matter what life throws at us, being by your side makes everything feel a little easier.</div>
+      <div class="mini-chibi look-up" id="chibiP2"></div>
+      <button class="nav-sparkle left" onclick="goTo('page1')">✨</button>
+      <button class="nav-sparkle right" onclick="goTo('page3')">✨</button>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-page3">
+    <div class="page-card">
+      <div class="page-num">3 / 4</div>
+      <div class="page-heading"><span class="highlight">Your Smile Is My Favorite Place 🌷</span></div>
+      <div class="page-text">Your smile is one of the most precious things I've ever seen. Every time you smile, it feels like the whole world becomes brighter. It makes me breathe easier, and somehow it makes me smile like a little kid without even realizing it. You have this beautiful way of filling my heart with happiness just by being yourself. I hope you never stop smiling because your smile is truly my favorite sight in this world.</div>
+      <div class="mini-chibi look-up" id="chibiP3"></div>
+      <button class="nav-sparkle left" onclick="goTo('page2')">✨</button>
+      <button class="nav-sparkle right" onclick="goTo('page4')">✨</button>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-page4">
+    <div class="page-card">
+      <div class="page-num">4 / 4</div>
+      <div class="page-heading"><span class="highlight">I Love You, Always and Forever 💖</span></div>
+      <div class="page-text">Vaishnavi, before you came into my life, I never truly knew what it felt like to be loved so deeply or to feel worthy of someone's heart. You made me believe in myself, made me feel important, and showed me what genuine love looks like. Thank you for loving me through everything, for staying, for caring, and for being the wonderful person you are. I promise to cherish you, support you, and love you with all my heart.
+
+Happy Girlfriend's Day, my love. I love you endlessly, Vaishnavi. 💞</div>
+      <div class="mini-chibi surprised" id="chibiP4"></div>
+      <button class="nav-sparkle left" onclick="goTo('page3')">✨</button>
+      <button class="nav-sparkle right" onclick="goTo('final')">✨</button>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 6 : FINAL / HER PAGE ===================== -->
+  <section class="screen" id="screen-final">
+    <div class="crown">👑</div>
+    <div class="heart-photo" onclick="document.getElementById('photoInput').click()">
+      <img id="hpImg" src="vaishnavi.jpg" alt="" style="display:block;">
+      <div class="placeholder" id="hpPlaceholder" style="display:none;">tap to add<br>her photo 💗<br><span style="opacity:.7;font-size:11px;">(or edit src in code: images/vaishnavi.jpg)</span></div>
+    </div>
+    <input type="file" id="photoInput" accept="image/*" onchange="loadPhoto(event)">
+    <div class="princess-text">mah princess</div>
+    <div class="final-name">Vaishnavi 💋 mwahh</div>
+    <div class="chibi" id="chibiFinal" style="margin-top:6px;"></div>
+    <div class="edit-note">made with 💞 for girlfriend's day</div>
+  </section>
+
+</div>
+
+<audio id="bgm" loop></audio>
+
+<script>
+/* =========================================================
+   CHIBI GIRL v2 — original simple SVG, cuter proportions
+   ========================================================= */
+function chibiSVG(expr, holdLetter){
+  let eyes, mouth;
+  if(expr==='shock'){
+    eyes = `<circle cx="35" cy="47" r="7.5" fill="#3a1220"/><circle cx="65" cy="47" r="7.5" fill="#3a1220"/>
+            <circle cx="37.5" cy="44" r="2.2" fill="#fff"/><circle cx="67.5" cy="44" r="2.2" fill="#fff"/>
+            <circle cx="33" cy="50" r="1.2" fill="#fff"/><circle cx="63" cy="50" r="1.2" fill="#fff"/>`;
+    mouth = `<ellipse cx="50" cy="63" rx="6" ry="8" fill="#8a2140"/>`;
+  } else if(expr==='wow'){
+    eyes = `<path d="M25,47 Q35,35 45,47" stroke="#3a1220" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M55,47 Q65,35 75,47" stroke="#3a1220" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    mouth = `<ellipse cx="50" cy="61" rx="8" ry="6" fill="#8a2140"/>`;
+  } else {
+    eyes = `<circle cx="35" cy="47" r="7.5" fill="#3a1220"/><circle cx="65" cy="47" r="7.5" fill="#3a1220"/>
+            <circle cx="37.5" cy="43.5" r="2.4" fill="#fff"/><circle cx="67.5" cy="43.5" r="2.4" fill="#fff"/>
+            <circle cx="33" cy="50" r="1.3" fill="#fff"/><circle cx="63" cy="50" r="1.3" fill="#fff"/>
+            <path d="M28,40 Q35,35 42,40" stroke="#3a1220" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M58,40 Q65,35 72,40" stroke="#3a1220" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    mouth = `<path d="M42,60 Q50,67 58,60" stroke="#8a2140" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  }
+  const letterSVG = holdLetter ? `
+    <g transform="translate(${holdLetter==='left'?'-4,148':'68,148'})">
+      <rect x="0" y="0" width="32" height="22" rx="5" fill="#fff" stroke="#ffb8d6" stroke-width="2"/>
+      <path d="M0,3 L16,15 L32,3" stroke="#ff9ecb" stroke-width="2" fill="none"/>
+    </g>` : '';
+  return `
+  <svg viewBox="0 0 100 190" xmlns="http://www.w3.org/2000/svg">
+    <!-- body/dress -->
+    <path d="M27,128 Q50,108 73,128 L80,188 L20,188 Z" fill="#e85a86"/>
+    <path d="M27,128 Q50,108 73,128 L76,148 Q50,164 24,148 Z" fill="#ffd6e8"/>
+    <circle cx="50" cy="134" r="5" fill="#fff2" stroke="#ffe1ef" stroke-width="1.5"/>
+    <!-- arms -->
+    <circle cx="19" cy="144" r="9" fill="#ffe0c2"/>
+    <circle cx="81" cy="144" r="9" fill="#ffe0c2"/>
+    <!-- twin tails -->
+    <path d="M14,58 Q2,90 14,122 Q22,95 20,60 Z" fill="#7a3560"/>
+    <path d="M86,58 Q98,90 86,122 Q78,95 80,60 Z" fill="#7a3560"/>
+    <circle cx="17" cy="60" r="6" fill="#ffb6d4"/>
+    <circle cx="83" cy="60" r="6" fill="#ffb6d4"/>
+    <!-- head -->
+    <circle cx="50" cy="55" r="35" fill="#ffe0c2"/>
+    <!-- hair front -->
+    <path d="M14,50 Q16,8 50,8 Q84,8 86,50 Q74,26 50,28 Q26,26 14,50 Z" fill="#8a3d68"/>
+    <path d="M40,10 Q50,2 60,10 L58,18 Q50,13 42,18 Z" fill="#ffb6d4"/>
+    <!-- blush -->
+    <ellipse cx="27" cy="59" rx="6.5" ry="4.2" fill="#ff9ecb" opacity=".65"/>
+    <ellipse cx="73" cy="59" rx="6.5" ry="4.2" fill="#ff9ecb" opacity=".65"/>
+    ${eyes}
+    ${mouth}
+    <text x="50" y="16" font-size="13" text-anchor="middle">✨</text>
+    ${letterSVG}
+  </svg>`;
+}
+document.getElementById('chibiCover').innerHTML  = chibiSVG('smile','both');
+document.getElementById('chibiReveal').innerHTML = chibiSVG('wow');
+document.getElementById('chibiP1').innerHTML     = chibiSVG('smile','left');   /* holding the letter, smiling */
+document.getElementById('chibiP2').innerHTML     = chibiSVG('wow');            /* looking up, admiring */
+document.getElementById('chibiP3').innerHTML     = chibiSVG('wow');            /* looking up, admiring */
+document.getElementById('chibiP4').innerHTML     = chibiSVG('shock');          /* surprised / wow reaction */
+document.getElementById('chibiFinal').innerHTML  = chibiSVG('shock');
+
+/* cherry blossom tree, drawn once */
+document.getElementById('treeWrap').innerHTML = `
+<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+  <path d="M100,260 L96,150 Q70,120 60,90 M96,150 Q120,125 128,95 M92,190 Q60,175 40,160 M100,175 Q135,165 155,150"
+        stroke="#3d2030" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <g fill="#ff9ecb" opacity=".9">
+    <circle cx="58" cy="86" r="16"/><circle cx="126" cy="90" r="18"/><circle cx="38" cy="155" r="14"/>
+    <circle cx="153" cy="146" r="15"/><circle cx="90" cy="60" r="17"/><circle cx="75" cy="130" r="13"/>
+    <circle cx="115" cy="135" r="12"/><circle cx="100" cy="95" r="14"/>
+  </g>
+  <g fill="#ffd6e8" opacity=".8">
+    <circle cx="70" cy="70" r="9"/><circle cx="140" cy="105" r="8"/><circle cx="50" cy="140" r="7"/>
+    <circle cx="105" cy="70" r="8"/><circle cx="130" cy="130" r="7"/>
+  </g>
+</svg>`;
+
+/* =========================================================
+   FLOATING PARTICLES (background, behind cards)
+   ========================================================= */
+const EMOJIS = ['✨','💞','❣️','🐱','💗'];
+const particleLayer = document.getElementById('particles');
+function spawnParticle(){
+  const el = document.createElement('div');
+  el.className = 'p';
+  el.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+  const left = Math.random()*100;
+  const dur = 6 + Math.random()*7;
+  el.style.left = left+'vw';
+  el.style.animationDuration = dur+'s';
+  el.style.fontSize = (14+Math.random()*14)+'px';
+  particleLayer.appendChild(el);
+  setTimeout(()=>el.remove(), dur*1000);
+}
+setInterval(spawnParticle, 350);
+for(let i=0;i<10;i++) setTimeout(spawnParticle, i*150);
+
+/* cherry blossom petals falling */
+const petalLayer = document.getElementById('petals');
+function spawnPetal(){
+  const el = document.createElement('div');
+  el.className='petal'; el.textContent='🌸';
+  el.style.left = (Math.random()*100)+'vw';
+  const dur = 8+Math.random()*8;
+  el.style.animationDuration = dur+'s';
+  el.style.fontSize=(12+Math.random()*10)+'px';
+  petalLayer.appendChild(el);
+  setTimeout(()=>el.remove(), dur*1000);
+}
+setInterval(spawnPetal, 900);
+
+/* =========================================================
+   SCREEN NAVIGATION
+   ========================================================= */
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+function openLetter(){
+  burstEffect();
+  setTimeout(()=>{
+    goTo('reveal');
+    startMusic(); // music starts right after letter opens + pops
+  }, 350);
+}
+
+function burstEffect(){
+  const container = document.getElementById('screen-cover');
+  const icons = ['✨','💞','🐱','❣️','✨','💞'];
+  icons.forEach((ic,i)=>{
+    const el = document.createElement('div');
+    el.className='burst-emoji';
+    el.textContent=ic;
+    const angle = (i/icons.length)*Math.PI*2;
+    const dist = 120+Math.random()*60;
+    el.style.setProperty('--dx', Math.cos(angle)*dist+'px');
+    el.style.setProperty('--dy', Math.sin(angle)*dist+'px');
+    el.style.left='50%'; el.style.top='50%';
+    container.appendChild(el);
+    requestAnimationFrame(()=>el.classList.add('go'));
+    setTimeout(()=>el.remove(),900);
+  });
+}
+
+/* =========================================================
+   MUSIC — tiny generated cute chime loop (no external file
+   needed). To use your own song instead: put a file named
+   music.mp3 next to this html and it will be used automatically.
+   ========================================================= */
+let audioCtx, musicOn=false, musicStarted=false;
+const bgm = document.getElementById('bgm');
+bgm.src = 'music.mp3'; // <-- put your own song file here (optional)
+
+function startMusic(){
+  if(musicStarted) return;
+  musicStarted = true;
+  bgm.volume = 0.5;
+  bgm.play().then(()=>{ musicOn=true; updateMusicBtn(); })
+  .catch(()=>{ playChimeLoop(); musicOn=true; updateMusicBtn(); });
+}
+function toggleMusic(){
+  if(!musicStarted){ return; } // music only starts after the letter opens
+  if(bgm.src && !bgm.paused){ bgm.pause(); musicOn=false; }
+  else if(bgm.src && bgm.paused && bgm.currentTime>0){ bgm.play(); musicOn=true; }
+  else { musicOn = !musicOn; }
+  updateMusicBtn();
+}
+function updateMusicBtn(){
+  document.getElementById('musicBtn').textContent = musicOn ? '🔊' : '🔇';
+}
+function playChimeLoop(){
+  try{
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const notes = [523.25,587.33,659.25,783.99,659.25,587.33];
+    let i=0;
+    function ping(){
+      if(!musicOn) return;
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type='sine'; o.frequency.value = notes[i%notes.length];
+      g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime+0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.9);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(); o.stop(audioCtx.currentTime+0.9);
+      i++;
+      setTimeout(ping, 700);
+    }
+    ping();
+  }catch(e){}
+}
+
+/* =========================================================
+   FINAL PAGE PHOTO UPLOAD (preview only in-browser)
+   ========================================================= */
+function loadPhoto(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const url = URL.createObjectURL(file);
+  const img = document.getElementById('hpImg');
+  img.src = url; img.style.display='block';
+  document.getElementById('hpPlaceholder').style.display='none';
+}
+</script>
+</body>
+</html>
